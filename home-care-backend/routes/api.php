@@ -13,7 +13,21 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+oute::get('/setup', [AuthorizationController::class, 'setup']);
+Route::post('/login', [ApiAuthController::class, 'login']);
+Route::post('/register', [ApiAuthController::class, 'register']);
+Route::get('/countries', [ApiAuthController::class, 'countries']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/resend-verification-code', [ApiAuthController::class, 'sendEmailCode']);
+    Route::post('/verify-email', [ApiAuthController::class, 'verifyEmail']);
+
+    Route::post('/send-otp', [VerificationDetailController::class, 'sendOtp']);
+    Route::post('/submit-verify-phone', [VerificationDetailController::class, 'verifyPhone']);
+    Route::get('/verify-phone/{user}', [VerificationDetailController::class, 'verifyPhonePage'])->name('user.verify-phone');
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+
+});
+
