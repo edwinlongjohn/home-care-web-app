@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verification_details', function (Blueprint $table) {
+        Schema::create('incedents', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->string('phone_pin')->nullable();
+            $table->integer('user_id')->constrained()->onDelete('cascade');
+            $table->string('image');
+            $table->string('slug');
+            $table->string('name');
             $table->timestamps();
         });
-
-        
     }
 
     /**
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('verification_details');
+        Schema::dropIfExists('incedents');
     }
 };

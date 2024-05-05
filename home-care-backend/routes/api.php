@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\IncidentDetailController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-oute::get('/setup', [AuthorizationController::class, 'setup']);
+Route::get('/setup', [AuthorizationController::class, 'setup']);
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/register', [ApiAuthController::class, 'register']);
 Route::get('/countries', [ApiAuthController::class, 'countries']);
@@ -28,6 +30,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::prefix('home-care')->group(function () {
+        Route::post('/create-incident', [IncidentController::class, 'createIncident']);
+        Route::get('/view-incidents', [IncidentController::class, 'viewIncidents']);
+        Route::get('/my-incidents-details', [IncidentController::class, 'viewYourIncidents']);
+        Route::get('/single-incident/{slug}', [IncidentController::class, 'singleIncident']);
+        Route::post('/submit-incident-log/{slug}', [IncidentController::class, 'incidentLog']);
+    });
+
+    Route::prefix('client')->group(function () {
+        Route::get('/select-incidents', [IncidentController::class, 'selectIncidents']);
+        Route::post('/upload-incident', [IncidentDetailController::class, 'clientUploadIncident']);
+        Route::get('/view-incident-log', [IncidentDetailController::class, 'viewIncidentLog']);
+    });
 
 });
 
