@@ -21,6 +21,10 @@ Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/register', [ApiAuthController::class, 'register']);
 Route::get('/countries', [ApiAuthController::class, 'countries']);
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/resend-verification-code', [ApiAuthController::class, 'sendEmailCode']);

@@ -30,7 +30,7 @@
                             </select> <i class="fal fa-chevron-down"></i>
                         </div>
                         <div class="form-group col-12">
-                            <label for="number"><span class="text-success" v-if="form.country">{{form.country.phonecode}}</span>{{form.phone_number}}</label>
+                            <label for="number"><span class="text-success" v-if="form.country">{{form.country.phonecode}}</span></label>
                             <input type="tel" class="form-control" v-model="form.phone_number"
                                 id="number" placeholder="start with phone code above e.g 2349018096086"> <i class="fal fa-phone mt-2"></i>
                         </div>
@@ -52,7 +52,7 @@
                                 id="password" placeholder="Password"> <i class="fal fa-eye"></i></div>
                         <div class="form-group col-12"><input type="password" class="form-control" v-model="form.password_confirmation"
                                 id="confirm_password" placeholder="Confirm password"> <i class="fal fa-eye"></i></div>
-                        <div class="form-btn col-12"><button class="th-btn btn-fw">Register</button></div>
+                        <div class="form-btn col-12"><button class="th-btn btn-fw ">{{form.loading ? 'processing' : 'Register'}}</button></div>
                     </div>
                     <p class="form-messages mb-0 mt-3"></p>
                 </div>
@@ -73,6 +73,7 @@
     import axios from 'axios';
     const countries = ref();
     const form = ref({
+        loading: false,
         email: '',
         full_name: '',
         user_type: '',
@@ -92,11 +93,10 @@
         
     });
     const getToken = async () =>{
-        await  axios.get('/sanctum/csrf-cookie').then((res)=>{
-            console.log(res)
-        })
+        await  axios.get('/sanctum/csrf-cookie')
     }
     const handleRegisteration = async () => {
+         form.value.loading = true,
          await getToken();
          await axios.post('/register', {
             email: form.value.email,
@@ -110,16 +110,22 @@
             user_type:form.value.user_type,
          }).then((res)=>{
             if(res.data.success){
-                const user = data.data.user;
+                //console.log(res.data.user);
+               
+                const user = res.data.user;
                 if(user.verificationType == 'email'){
                     router.push = '/email-code';
                 }
-                if(user.verificationType == 'phone')
-                router.push = '/phone-code';
+                if(user.verificationType == 'phone'){
+                    router.push = '/phone-code';
+                }
+               
             }
 
          }).catch((err)=>{
             console.log(err);
+         }).finally(()=>{
+            form.value.loading = false;
          });
          
     }
