@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\IncidentDetailController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteGroup;
@@ -21,6 +22,7 @@ Route::post('/register', [ApiAuthController::class, 'register']);
 Route::get('/countries', [ApiAuthController::class, 'countries']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
     Route::get('/resend-verification-code', [ApiAuthController::class, 'sendEmailCode']);
     Route::post('/verify-email', [ApiAuthController::class, 'verifyEmail']);
 

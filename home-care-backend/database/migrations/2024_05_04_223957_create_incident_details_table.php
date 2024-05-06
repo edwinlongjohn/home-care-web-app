@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('user_id')->constrained()->onDelete('cascade');
             $table->integer('incident_id');
             $table->integer('home_care_id');
-            $table->timestamps('date');
+            $table->string('date');
             $table->string('incident_type');
             $table->string('priority');
             $table->string('status');

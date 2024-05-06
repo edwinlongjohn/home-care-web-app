@@ -29,7 +29,6 @@ class VerificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('noreply@home_care.com', 'HomeCare'),
             subject: 'Verification Mail',
         );
     }

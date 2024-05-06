@@ -134,7 +134,7 @@ class ApiAuthController extends Controller
 
     public function countries()
     {
-        $countries = Country::orderBy('phonecode', 'asc')->get();
+        $countries = Country::orderBy('name', 'asc')->get();
 
         return response()->json(['success' => true, 'countries' => $countries]);
     }
