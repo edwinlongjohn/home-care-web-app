@@ -86,6 +86,7 @@
 
     onMounted(async () => {
         const data = await axios.get('/api/countries')
+        console.log(data.data.countries);
         countries.value = data.data.countries;
         
         
